@@ -6,6 +6,7 @@ import MainLogo from "../../assets/global/logo.png";
 import ButtonComponent from "./ButtonComponent";
 import SearchBox from "./search/SearchBox";
 import ProfileAvatar from "../../assets/global/profile.png";
+import { useState } from "react";
 
 const NavbarWrap = styled.div`
   position: fixed;
@@ -60,6 +61,10 @@ const ProfileText = styled.div`
   font-size: 1.3rem;
 `;
 
+const ProfileWrap = styled.div`
+  position: relative;
+`;
+
 const ProfileImageWrap = styled.div`
   width: 2.3rem;
   height: 2.3rem;
@@ -76,7 +81,33 @@ const ProfileImage = styled.img`
   transform: translateX(-50%);
 `;
 
-function NavbarComponent({ authInfo }) {
+const ProfileBoard = styled.div`
+  position: absolute;
+  right: 0rem;
+  bottom: -7.5rem;
+  background-color: #ffffff;
+  width: 10rem;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 4px 2px 4px rgba(0, 0, 0, 0.08);
+`;
+
+const ProfileItem = styled.div`
+  padding: 1rem;
+  font-size: 1.3rem;
+  cursor: pointer;
+  text-align: center;
+  user-select: none;
+  & + & {
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+  }
+`;
+
+function NavbarComponent({
+  authInfo,
+  onClickProfileImg,
+  visible,
+  onClickSignOut,
+}) {
   return (
     <>
       <NavbarWrap>
@@ -99,9 +130,17 @@ function NavbarComponent({ authInfo }) {
                 </span>{" "}
                 님 환영합니다
               </ProfileText>
-              <ProfileImageWrap>
-                <ProfileImage src={ProfileAvatar} />
-              </ProfileImageWrap>
+              <ProfileWrap>
+                <ProfileImageWrap onClick={onClickProfileImg}>
+                  <ProfileImage src={ProfileAvatar} />
+                </ProfileImageWrap>
+                {visible && (
+                  <ProfileBoard>
+                    <ProfileItem>회원 정보 변경</ProfileItem>
+                    <ProfileItem onClick={onClickSignOut}>로그아웃</ProfileItem>
+                  </ProfileBoard>
+                )}
+              </ProfileWrap>
             </div>
           ) : (
             <div className="right">
